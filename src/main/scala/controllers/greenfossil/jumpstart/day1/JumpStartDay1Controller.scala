@@ -18,7 +18,6 @@ object JumpStartDay1Controller:
    */
   @Get("/greetMe")
   def greetMe(@Param @Default("") name: String) =
-    println("Test")
     val vowels = "aeiou"
     if name.isEmpty then "Hello stranger!"
     else if vowels.indexOf(Character.toLowerCase(name.charAt(0))) != -1 then s"Hi, $name!"
