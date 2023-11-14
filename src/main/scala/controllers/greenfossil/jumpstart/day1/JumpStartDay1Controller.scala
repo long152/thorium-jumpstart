@@ -31,7 +31,7 @@ object JumpStartDay1Controller:
    * 3. dob: java.time.LocalDate with format (dd/MM/yyyy)
    */
   private def signupMapping: Mapping[User] = mapping[User](
-    "firstname" -> text,
+    "firstname" -> nonEmptyText(true),
     "lastname" -> optional(text),
     "dob" -> localDateUsing("dd/MM/yyyy")
   )
