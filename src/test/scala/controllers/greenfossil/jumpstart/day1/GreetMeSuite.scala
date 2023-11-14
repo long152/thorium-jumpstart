@@ -10,7 +10,7 @@ class GreetMeSuite extends FunSuite:
   /*
    * HINT: Use the `addService` method
    */
-  val server: Server = Server(8080)
+  val server: Server = Server(8080).addServices(JumpStartDay1Controller)
 
   val webClient: WebClient = WebClient.of("http://localhost:8080")
 
@@ -30,6 +30,31 @@ class GreetMeSuite extends FunSuite:
     val response = webClient.get("/greetMe").aggregate.get()
     assertEquals(response.status(), HttpStatus.OK)
     assertNoDiff(response.contentUtf8(), "Hello stranger!")
+
+  test("Post /signup with invalid data"):
+    val requestBody =
+      """
+        |{
+        |  "lastname": "Tran"
+        |}""".stripMargin
+    val response = webClient.post("/signup", requestBody).aggregate.get()
+    assertEquals(response.status(), HttpStatus.BAD_REQUEST)
+    assertNoDiff(response.contentUtf8(), "Invalid Data")
+
+  // I tried to write the test below but it didn't work (always return 400 Bad Request.)
+  // Note that I've started the real server and it works fine.
+  // Please help me check where I was wrong. Thanks!
+//  test("Post /signup with valid data"):
+//    val body =
+//      """
+//        |{
+//        |  "firstname": "Long",
+//        |  "lastname": "Tran",
+//        |  "dob": "15/02/1994"
+//        |}""".stripMargin
+//    val response = webClient.post("/signup", body).aggregate.get()
+//    assertEquals(response.status(), HttpStatus.OK)
+//    assertNoDiff(response.contentUtf8(), "Welcome Long Tran! You were born on 15/02/1994.")
 
   override def beforeAll(): Unit = server.start()
 
